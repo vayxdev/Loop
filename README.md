@@ -15,9 +15,42 @@ Loop is a long-form book translation pipeline powered by LLMs. It supports both 
 
 ## Installation
 
+### From source
+
 ```bash
 npm install
 npm run build
+```
+
+### Prebuilt binaries
+
+You can also download a standalone binary from the [releases page](https://github.com/vayxdev/Loop/releases). Replace `v0.1.3` with the latest tag:
+
+```bash
+# macOS Apple Silicon
+curl -fsSL -o loop https://github.com/vayxdev/Loop/releases/download/v0.1.3/loop-macos-arm64
+chmod +x loop
+./loop --help
+
+# macOS Intel
+curl -fsSL -o loop https://github.com/vayxdev/Loop/releases/download/v0.1.3/loop-macos-x64
+chmod +x loop
+./loop --help
+
+# Linux x64
+curl -fsSL -o loop https://github.com/vayxdev/Loop/releases/download/v0.1.3/loop-linux-x64
+chmod +x loop
+./loop --help
+
+# Windows
+curl -fsSL -o loop.exe https://github.com/vayxdev/Loop/releases/download/v0.1.3/loop-windows-x64.exe
+loop.exe --help
+```
+
+On macOS, if Gatekeeper warns that the binary cannot be verified, remove the quarantine flag:
+
+```bash
+xattr -dr com.apple.quarantine loop
 ```
 
 ## Quick start
