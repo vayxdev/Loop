@@ -33,23 +33,20 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install dependencies
+        run: bun install
+
       - name: Build binary
         shell: bash
         env:
           OUT: loop-${{ matrix.suffix }}
-        run: |
-          ./scripts/build-bun.sh
-          if [ "${{ matrix.os }}" = "windows-latest" ] && [ ! -f "loop-${{ matrix.suffix }}.exe" ]; then
-            mv "loop-${{ matrix.suffix }}" "loop-${{ matrix.suffix }}.exe"
-          fi
+        run: ./scripts/build-bun.sh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: loop-${{ matrix.suffix }}
-          path: |
-            loop-${{ matrix.suffix }}
-            loop-${{ matrix.suffix }}.exe
+          path: loop-${{ matrix.suffix }}*
 
   release:
     needs: build
