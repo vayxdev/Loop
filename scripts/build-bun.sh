@@ -45,7 +45,13 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo "Building binary: $OUT"
-"$BUN_CMD" build --compile --minify "src/cli.ts" --outfile "$OUT"
+BUILD_ARGS=(build --compile --minify "src/cli.ts" --outfile "$OUT")
+if [ -n "${BUN_TARGET:-}" ]; then
+  BUILD_ARGS+=(--target "$BUN_TARGET")
+  echo "Building binary: $OUT (target: $BUN_TARGET)"
+else
+  echo "Building binary: $OUT"
+fi
+"$BUN_CMD" "${BUILD_ARGS[@]}"
 
 echo "Built: $ROOT_DIR/$OUT"

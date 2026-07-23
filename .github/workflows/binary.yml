@@ -17,12 +17,16 @@ jobs:
         include:
           - os: macos-latest
             suffix: macos-arm64
-          - os: macos-13
+            target: bun-darwin-arm64
+          - os: macos-latest
             suffix: macos-x64
+            target: bun-darwin-x64
           - os: ubuntu-latest
             suffix: linux-x64
+            target: bun-linux-x64
           - os: windows-latest
             suffix: windows-x64
+            target: bun-windows-x64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -40,6 +44,7 @@ jobs:
         shell: bash
         env:
           OUT: loop-${{ matrix.suffix }}
+          BUN_TARGET: ${{ matrix.target }}
         run: ./scripts/build-bun.sh
 
       - name: Upload artifact
