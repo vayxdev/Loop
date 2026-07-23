@@ -1,0 +1,7 @@
+node_modules/
+dist/
+state/
+output/
+*.log
+config.yaml
+.DS_Store

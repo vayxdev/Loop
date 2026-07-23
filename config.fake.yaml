@@ -1,0 +1,30 @@
+language:
+  source: en
+  target: zh
+
+llm:
+  provider: fake
+  tiers:
+    strong:
+      model: fake
+    cheap:
+      model: fake
+    fast:
+      model: fake
+
+segment:
+  maxCharsPerBatch: 500
+  maxCharsPerSegment: 300
+
+pipeline:
+  review: false
+  polish: true
+  backtranslateSample: 0
+  rollingContextSegments: 2
+  bookUnderstanding: true
+  prescanConcurrency: 2
+
+output:
+  mono: true
+  bilingual: false
+  aboutPage: true

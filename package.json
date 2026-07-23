@@ -1,0 +1,33 @@
+{
+  "name": "loop-translate",
+  "version": "1.0.0",
+  "description": "Loop: a long-form book translation pipeline powered by LLMs",
+  "main": "dist/index.js",
+  "bin": {
+    "loop": "dist/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "prepare": "npm run build",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": ["loop", "translation", "book", "llm", "epub", "nonfiction"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^12.0.0",
+    "commander": "^13.0.0",
+    "glob": "^11.0.0",
+    "js-yaml": "^4.1.0",
+    "openai": "^4.87.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.0.0"
+  }
+}
