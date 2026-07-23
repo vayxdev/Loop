@@ -1,6 +1,6 @@
 {
   "name": "loop-translate",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Loop: a long-form book translation pipeline powered by LLMs",
   "main": "dist/index.js",
   "bin": {
