@@ -16,11 +16,19 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "build:binary": "./scripts/build-bun.sh",
     "dev": "tsx src/cli.ts",
     "prepare": "npm run build",
     "test": "echo \"No tests yet\" && exit 0"
   },
-  "keywords": ["loop", "translation", "book", "llm", "epub", "nonfiction"],
+  "keywords": [
+    "loop",
+    "translation",
+    "book",
+    "llm",
+    "epub",
+    "nonfiction"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -35,6 +43,7 @@
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.12",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "pkg": "^5.8.1"
   }
 }

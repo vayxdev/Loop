@@ -1,0 +1,72 @@
+name: Build Binary
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            suffix: macos-arm64
+          - os: macos-13
+            suffix: macos-x64
+          - os: ubuntu-latest
+            suffix: linux-x64
+          - os: windows-latest
+            suffix: windows-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Build binary
+        shell: bash
+        run: |
+          ./scripts/build-bun.sh
+          # The script names the binary based on uname; rename for consistency
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            mv loop-windows-x64.exe loop-${{ matrix.suffix }}.exe || mv loop-windows-x64 loop-${{ matrix.suffix }}.exe
+          else
+            mv "loop-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m | sed 's/x86_64/x64/')" "loop-${{ matrix.suffix }}"
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-${{ matrix.suffix }}
+          path: loop-${{ matrix.suffix }}*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -la artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: artifacts/loop-*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
