@@ -35,20 +35,21 @@ jobs:
 
       - name: Build binary
         shell: bash
+        env:
+          OUT: loop-${{ matrix.suffix }}
         run: |
           ./scripts/build-bun.sh
-          # The script names the binary based on uname; rename for consistency
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            mv loop-windows-x64.exe loop-${{ matrix.suffix }}.exe || mv loop-windows-x64 loop-${{ matrix.suffix }}.exe
-          else
-            mv "loop-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m | sed 's/x86_64/x64/')" "loop-${{ matrix.suffix }}"
+          if [ "${{ matrix.os }}" = "windows-latest" ] && [ ! -f "loop-${{ matrix.suffix }}.exe" ]; then
+            mv "loop-${{ matrix.suffix }}" "loop-${{ matrix.suffix }}.exe"
           fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: loop-${{ matrix.suffix }}
-          path: loop-${{ matrix.suffix }}*
+          path: |
+            loop-${{ matrix.suffix }}
+            loop-${{ matrix.suffix }}.exe
 
   release:
     needs: build

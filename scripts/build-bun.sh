@@ -16,15 +16,18 @@ if ! command -v bun &> /dev/null; then
 fi
 
 # Determine platform suffix
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH=$(uname -m)
-if [ "$ARCH" = "x86_64" ]; then
-  ARCH="x64"
-elif [ "$ARCH" = "arm64" ]; then
-  ARCH="arm64"
+OUT="${OUT:-}"
+if [ -z "$OUT" ]; then
+  OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+  ARCH=$(uname -m)
+  if [ "$ARCH" = "x86_64" ]; then
+    ARCH="x64"
+  elif [ "$ARCH" = "arm64" ]; then
+    ARCH="arm64"
+  fi
+  SUFFIX="${OS}-${ARCH}"
+  OUT="loop-${SUFFIX}"
 fi
-SUFFIX="${OS}-${ARCH}"
-OUT="loop-${SUFFIX}"
 
 # Backup current store.ts and swap in Bun implementation
 cp "$STORE_DIR/store.ts" "$STORE_DIR/store.ts.bak"
