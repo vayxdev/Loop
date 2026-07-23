@@ -10,7 +10,14 @@ STORE_DIR="$ROOT_DIR/src/glossary"
 
 cd "$ROOT_DIR"
 
-if ! command -v bun &> /dev/null; then
+BUN_CMD="$(command -v bun 2>/dev/null || true)"
+if [ -z "$BUN_CMD" ] && [ -n "${BUN_INSTALL:-}" ] && [ -x "${BUN_INSTALL}/bin/bun" ]; then
+  BUN_CMD="${BUN_INSTALL}/bin/bun"
+fi
+if [ -z "$BUN_CMD" ] && [ -x "$HOME/.bun/bin/bun" ]; then
+  BUN_CMD="$HOME/.bun/bin/bun"
+fi
+if [ -z "$BUN_CMD" ]; then
   echo "Error: bun is not installed. Install from https://bun.sh"
   exit 1
 fi
@@ -39,6 +46,6 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Building binary: $OUT"
-bun build --compile --minify "src/cli.ts" --outfile "$OUT"
+"$BUN_CMD" build --compile --minify "src/cli.ts" --outfile "$OUT"
 
 echo "Built: $ROOT_DIR/$OUT"
